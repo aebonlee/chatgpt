@@ -725,7 +725,7 @@ with client.beta.threads.runs.stream(
               </p>
 
               <h3>{isKo ? '모델 사양 비교' : 'Model Specifications'}</h3>
-              <div style={{overflowX: 'auto'}}>
+              <div className="comparison-table-wrapper">
                 <table className="comparison-table">
                   <thead>
                     <tr>
@@ -805,7 +805,7 @@ with client.beta.threads.runs.stream(
               </div>
 
               <h3>{isKo ? '벤치마크 성능 비교' : 'Benchmark Performance'}</h3>
-              <div style={{overflowX: 'auto'}}>
+              <div className="comparison-table-wrapper">
                 <table className="comparison-table">
                   <thead>
                     <tr>

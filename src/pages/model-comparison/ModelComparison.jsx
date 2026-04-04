@@ -366,7 +366,7 @@ export default function ModelComparison() {
           : 'The table below provides an at-a-glance comparison of key specifications for major OpenAI models.'}
       </p>
 
-      <div style={{ overflowX: 'auto', marginBottom: '32px' }}>
+      <div className="comparison-table-wrapper" style={{ marginBottom: '32px' }}>
         <table className="comparison-table">
           <thead>
             <tr>
@@ -454,7 +454,7 @@ export default function ModelComparison() {
       </TipBox>
 
       <h3>{ko ? '벤치마크 성능 비교' : 'Benchmark Performance Comparison'}</h3>
-      <div style={{ overflowX: 'auto' }}>
+      <div className="comparison-table-wrapper">
         <table className="comparison-table">
           <thead>
             <tr>
