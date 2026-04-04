@@ -1,0 +1,106 @@
+const translations = {
+  ko: {
+    nav: {
+      about: '소개',
+      community: '커뮤니티',
+    },
+    hero: {
+      badge: 'ChatGPT 완벽 가이드 2025',
+      title: 'ChatGPT의 모든 것을\n',
+      titleHighlight: '완벽하게 마스터하세요',
+      description: '기초 사용법부터 프롬프트 엔지니어링, GPTs 제작, API 개발까지 — ChatGPT 활용의 A to Z를 체계적으로 학습하세요.',
+      cta: '학습 시작하기',
+      ctaSecondary: '더 알아보기',
+    },
+    features: {
+      title: '왜 ChatGPT Master인가?',
+      subtitle: 'ChatGPT 활용에 필요한 모든 지식을 체계적으로 정리했습니다.',
+      basics: { title: '체계적 학습', desc: '초보자부터 전문가까지, 단계별 커리큘럼으로 ChatGPT를 완벽히 마스터할 수 있습니다.' },
+      prompt: { title: '프롬프트 마스터', desc: '효과적인 프롬프트 작성법과 고급 기법을 실전 예제와 함께 학습합니다.' },
+      api: { title: 'API 개발 가이드', desc: 'OpenAI API를 활용한 애플리케이션 개발 방법을 단계별로 안내합니다.' },
+      community: { title: '실전 활용 사례', desc: '업무, 학습, 창작 등 다양한 분야에서의 ChatGPT 활용 사례를 공유합니다.' },
+    },
+    home: {
+      pathsTitle: '학습 경로',
+      pathsSubtitle: '목표에 맞는 학습 경로를 선택하고 체계적으로 학습하세요.',
+      workflowTitle: '학습 플로우',
+      workflowSubtitle: '4단계로 ChatGPT를 완벽하게 마스터하세요.',
+      step1: '기초 다지기',
+      step1desc: 'ChatGPT 계정 생성부터 인터페이스 이해, 기본 대화 방법을 학습합니다.',
+      step2: '프롬프트 작성',
+      step2desc: '원하는 결과를 얻기 위한 효과적인 프롬프트 작성법을 마스터합니다.',
+      step3: '고급 기능 활용',
+      step3desc: 'GPTs, DALL-E, Code Interpreter 등 고급 기능을 실전에 적용합니다.',
+      step4: 'API 개발',
+      step4desc: 'OpenAI API로 나만의 AI 애플리케이션을 개발합니다.',
+    },
+    stats: {
+      guides: '학습 가이드',
+      topics: '학습 주제',
+      categories: '학습 카테고리',
+    },
+    cta: {
+      title: '지금 바로 ChatGPT 마스터를 시작하세요',
+      description: 'ChatGPT의 무한한 가능성을 발견하고, AI와 함께하는 미래를 준비하세요.',
+      button: '학습 시작하기',
+    },
+    footer: {
+      description: 'ChatGPT의 모든 기능을 학습하는 종합 플랫폼입니다.',
+      descriptionDetail: 'OpenAI의 ChatGPT를 효과적으로 활용하기 위한 체계적인 학습 자료를 제공합니다.',
+      quickLinks: '빠른 링크',
+    },
+  },
+  en: {
+    nav: {
+      about: 'About',
+      community: 'Community',
+    },
+    hero: {
+      badge: 'Complete ChatGPT Guide 2025',
+      title: 'Master Everything About\n',
+      titleHighlight: 'ChatGPT',
+      description: 'From basics to prompt engineering, GPTs creation, and API development — learn ChatGPT from A to Z systematically.',
+      cta: 'Start Learning',
+      ctaSecondary: 'Learn More',
+    },
+    features: {
+      title: 'Why ChatGPT Master?',
+      subtitle: 'We\'ve systematically organized all the knowledge you need to use ChatGPT effectively.',
+      basics: { title: 'Systematic Learning', desc: 'From beginners to experts, master ChatGPT with our step-by-step curriculum.' },
+      prompt: { title: 'Prompt Mastery', desc: 'Learn effective prompt writing techniques and advanced methods with practical examples.' },
+      api: { title: 'API Dev Guide', desc: 'Step-by-step guide to developing applications with the OpenAI API.' },
+      community: { title: 'Real-world Cases', desc: 'Share ChatGPT use cases across work, learning, and creative fields.' },
+    },
+    home: {
+      pathsTitle: 'Learning Paths',
+      pathsSubtitle: 'Choose a learning path that matches your goals and learn systematically.',
+      workflowTitle: 'Learning Flow',
+      workflowSubtitle: 'Master ChatGPT in 4 systematic steps.',
+      step1: 'Build Foundation',
+      step1desc: 'Learn from account creation to understanding the interface and basic conversation methods.',
+      step2: 'Write Prompts',
+      step2desc: 'Master effective prompt writing techniques to get the results you want.',
+      step3: 'Use Advanced Features',
+      step3desc: 'Apply GPTs, DALL-E, Code Interpreter and other advanced features in practice.',
+      step4: 'API Development',
+      step4desc: 'Build your own AI applications with the OpenAI API.',
+    },
+    stats: {
+      guides: 'Learning Guides',
+      topics: 'Topics Covered',
+      categories: 'Categories',
+    },
+    cta: {
+      title: 'Start Mastering ChatGPT Today',
+      description: 'Discover the limitless possibilities of ChatGPT and prepare for an AI-powered future.',
+      button: 'Start Learning',
+    },
+    footer: {
+      description: 'A comprehensive platform for learning all features of ChatGPT.',
+      descriptionDetail: 'We provide systematic learning materials for effectively utilizing OpenAI\'s ChatGPT.',
+      quickLinks: 'Quick Links',
+    },
+  },
+};
+
+export default translations;
