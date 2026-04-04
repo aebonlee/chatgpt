@@ -21,7 +21,21 @@ export default function APIUsage() {
 
   const currentIndex = SECTIONS.findIndex((s) => s.id === activeSection);
 
-  const goToSection = (id) => {
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setActiveSection(SECTIONS[currentIndex - 1].id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleNext = () => {
+    if (currentIndex < SECTIONS.length - 1) {
+      setActiveSection(SECTIONS[currentIndex + 1].id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleNavClick = (id) => {
     setActiveSection(id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -39,40 +53,36 @@ export default function APIUsage() {
       />
 
       <div className="guide-page">
-        {/* Sidebar Navigation */}
-        <aside className="guide-sidebar">
-          <nav className="guide-nav">
-            <h3 className="guide-nav-title">
-              <i className="fa-solid fa-code" />
+        <div className="guide-layout">
+          {/* Sidebar */}
+          <aside className="guide-sidebar">
+            <div className="guide-sidebar-title">
               {isKo ? 'API 가이드' : 'API Guide'}
-            </h3>
-            <ul className="guide-nav-list">
+            </div>
+            <ul className="guide-nav">
               {SECTIONS.map((section) => (
-                <li key={section.id}>
+                <li key={section.id} className="guide-nav-item">
                   <button
-                    className={`guide-nav-item ${activeSection === section.id ? 'active' : ''}`}
-                    onClick={() => goToSection(section.id)}
+                    className={`guide-nav-link ${activeSection === section.id ? 'active' : ''}`}
+                    onClick={() => handleNavClick(section.id)}
                   >
-                    <i className={`fa-solid ${section.icon}`} />
-                    {isKo ? section.ko : section.en}
+                    <span className="nav-icon"><i className={`fa-solid ${section.icon}`} /></span>
+                    <span>{isKo ? section.ko : section.en}</span>
                   </button>
                 </li>
               ))}
             </ul>
-          </nav>
-        </aside>
+          </aside>
 
-        {/* Main Content */}
-        <main className="guide-content">
-          <div className="guide-header">
-            <h1>
-              <i className={`fa-solid ${SECTIONS[currentIndex].icon}`} />
-              {isKo ? SECTIONS[currentIndex].ko : SECTIONS[currentIndex].en}
-            </h1>
-            <p className="guide-step-indicator">
-              {currentIndex + 1} / {SECTIONS.length}
-            </p>
-          </div>
+          {/* Content */}
+          <main className="guide-content">
+            <div className="guide-content-header">
+              <h1>
+                <i className={`fa-solid ${SECTIONS[currentIndex].icon}`} />
+                {' '}{isKo ? SECTIONS[currentIndex].ko : SECTIONS[currentIndex].en}
+              </h1>
+              <p>{currentIndex + 1} / {SECTIONS.length}</p>
+            </div>
 
           {/* Setup Section */}
           {activeSection === 'setup' && (
@@ -714,40 +724,126 @@ with client.beta.threads.runs.stream(
                   : 'OpenAI API charges based on token usage. Pricing varies by model, and input and output tokens have different unit prices.'}
               </p>
 
-              <div className="guide-table-wrapper">
-                <table className="guide-table">
+              <h3>{isKo ? '모델 사양 비교' : 'Model Specifications'}</h3>
+              <div style={{overflowX: 'auto'}}>
+                <table className="comparison-table">
                   <thead>
                     <tr>
                       <th>{isKo ? '모델' : 'Model'}</th>
-                      <th>{isKo ? '입력 (1M 토큰)' : 'Input (1M tokens)'}</th>
-                      <th>{isKo ? '출력 (1M 토큰)' : 'Output (1M tokens)'}</th>
-                      <th>{isKo ? '특징' : 'Features'}</th>
+                      <th>{isKo ? '컨텍스트' : 'Context'}</th>
+                      <th>{isKo ? '최대 출력' : 'Max Output'}</th>
+                      <th>{isKo ? '입력 비용' : 'Input Cost'}</th>
+                      <th>{isKo ? '출력 비용' : 'Output Cost'}</th>
+                      <th>{isKo ? '속도' : 'Speed'}</th>
+                      <th>{isKo ? '멀티모달' : 'Multimodal'}</th>
+                      <th>{isKo ? '추론 능력' : 'Reasoning'}</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td><strong>GPT-4o</strong></td>
-                      <td>$2.50</td>
-                      <td>$10.00</td>
-                      <td>{isKo ? '최고 성능, 멀티모달' : 'Best performance, multimodal'}</td>
+                      <td>128K</td>
+                      <td>16K</td>
+                      <td>$2.50/1M</td>
+                      <td>$10.00/1M</td>
+                      <td>{isKo ? '빠름' : 'Fast'}</td>
+                      <td>{isKo ? '텍스트, 이미지, 오디오' : 'Text, Image, Audio'}</td>
+                      <td>{isKo ? '높음' : 'High'}</td>
                     </tr>
                     <tr>
-                      <td><strong>GPT-4o-mini</strong></td>
-                      <td>$0.15</td>
-                      <td>$0.60</td>
-                      <td>{isKo ? '가성비 최고, 빠른 응답' : 'Best value, fast response'}</td>
+                      <td><strong>GPT-4 Turbo</strong></td>
+                      <td>128K</td>
+                      <td>4K</td>
+                      <td>$10.00/1M</td>
+                      <td>$30.00/1M</td>
+                      <td>{isKo ? '보통' : 'Medium'}</td>
+                      <td>{isKo ? '텍스트, 이미지' : 'Text, Image'}</td>
+                      <td>{isKo ? '높음' : 'High'}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>GPT-4</strong></td>
+                      <td>8K</td>
+                      <td>8K</td>
+                      <td>$30.00/1M</td>
+                      <td>$60.00/1M</td>
+                      <td>{isKo ? '느림' : 'Slow'}</td>
+                      <td>{isKo ? '텍스트' : 'Text'}</td>
+                      <td>{isKo ? '높음' : 'High'}</td>
                     </tr>
                     <tr>
                       <td><strong>o1</strong></td>
-                      <td>$15.00</td>
-                      <td>$60.00</td>
-                      <td>{isKo ? '추론 특화, 복잡한 문제' : 'Reasoning focused, complex problems'}</td>
+                      <td>200K</td>
+                      <td>100K</td>
+                      <td>$15.00/1M</td>
+                      <td>$60.00/1M</td>
+                      <td>{isKo ? '느림 (추론)' : 'Slow (Reasoning)'}</td>
+                      <td>{isKo ? '텍스트, 이미지' : 'Text, Image'}</td>
+                      <td>{isKo ? '매우 높음' : 'Very High'}</td>
                     </tr>
                     <tr>
                       <td><strong>o3-mini</strong></td>
-                      <td>$1.10</td>
-                      <td>$4.40</td>
-                      <td>{isKo ? '경량 추론 모델' : 'Lightweight reasoning model'}</td>
+                      <td>200K</td>
+                      <td>100K</td>
+                      <td>$1.10/1M</td>
+                      <td>$4.40/1M</td>
+                      <td>{isKo ? '보통 (추론)' : 'Medium (Reasoning)'}</td>
+                      <td>{isKo ? '텍스트' : 'Text'}</td>
+                      <td>{isKo ? '높음' : 'High'}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>GPT-4o mini</strong></td>
+                      <td>128K</td>
+                      <td>16K</td>
+                      <td>$0.15/1M</td>
+                      <td>$0.60/1M</td>
+                      <td>{isKo ? '매우 빠름' : 'Very Fast'}</td>
+                      <td>{isKo ? '텍스트, 이미지' : 'Text, Image'}</td>
+                      <td>{isKo ? '보통' : 'Medium'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>{isKo ? '벤치마크 성능 비교' : 'Benchmark Performance'}</h3>
+              <div style={{overflowX: 'auto'}}>
+                <table className="comparison-table">
+                  <thead>
+                    <tr>
+                      <th>{isKo ? '벤치마크' : 'Benchmark'}</th>
+                      <th>GPT-4o</th>
+                      <th>GPT-4 Turbo</th>
+                      <th>o1</th>
+                      <th>GPT-4o mini</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>MMLU</strong></td>
+                      <td>88.7%</td>
+                      <td>86.4%</td>
+                      <td>92.3%</td>
+                      <td>82.0%</td>
+                    </tr>
+                    <tr>
+                      <td><strong>HumanEval ({isKo ? '코딩' : 'Coding'})</strong></td>
+                      <td>90.2%</td>
+                      <td>86.6%</td>
+                      <td>92.4%</td>
+                      <td>87.0%</td>
+                    </tr>
+                    <tr>
+                      <td><strong>MATH</strong></td>
+                      <td>76.6%</td>
+                      <td>72.2%</td>
+                      <td>94.8%</td>
+                      <td>70.2%</td>
+                    </tr>
+                    <tr>
+                      <td><strong>GPQA Diamond</strong></td>
+                      <td>53.6%</td>
+                      <td>49.1%</td>
+                      <td>78.0%</td>
+                      <td>40.2%</td>
                     </tr>
                   </tbody>
                 </table>
@@ -849,28 +945,35 @@ print(f"\\nGPT-4o 예상 비용 (입력 1000 + 출력 500 토큰): $" + f"{cost:
             </section>
           )}
 
-          {/* Section Navigation Buttons */}
-          <div className="guide-nav-buttons">
-            {currentIndex > 0 && (
+            {/* Section Navigation */}
+            <div className="guide-section-nav">
               <button
                 className="guide-nav-btn prev"
-                onClick={() => goToSection(SECTIONS[currentIndex - 1].id)}
+                onClick={handlePrev}
+                disabled={currentIndex === 0}
               >
                 <i className="fa-solid fa-arrow-left" />
-                {isKo ? SECTIONS[currentIndex - 1].ko : SECTIONS[currentIndex - 1].en}
+                <span>
+                  {currentIndex > 0
+                    ? isKo ? SECTIONS[currentIndex - 1].ko : SECTIONS[currentIndex - 1].en
+                    : isKo ? '이전' : 'Previous'}
+                </span>
               </button>
-            )}
-            {currentIndex < SECTIONS.length - 1 && (
               <button
                 className="guide-nav-btn next"
-                onClick={() => goToSection(SECTIONS[currentIndex + 1].id)}
+                onClick={handleNext}
+                disabled={currentIndex === SECTIONS.length - 1}
               >
-                {isKo ? SECTIONS[currentIndex + 1].ko : SECTIONS[currentIndex + 1].en}
+                <span>
+                  {currentIndex < SECTIONS.length - 1
+                    ? isKo ? SECTIONS[currentIndex + 1].ko : SECTIONS[currentIndex + 1].en
+                    : isKo ? '다음' : 'Next'}
+                </span>
                 <i className="fa-solid fa-arrow-right" />
               </button>
-            )}
-          </div>
-        </main>
+            </div>
+          </main>
+        </div>
       </div>
     </>
   );

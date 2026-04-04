@@ -47,54 +47,49 @@ export default function AdvancedFeatures() {
       />
 
       <div className="guide-page">
-        {/* Sidebar */}
-        <aside className="guide-sidebar">
-          <div className="guide-sidebar-header">
-            <h3 className="guide-sidebar-title">
-              <i className="fa-solid fa-rocket" />
-              {isKo ? ' 고급 기능' : ' Advanced Features'}
-            </h3>
-          </div>
-          <nav className="guide-sidebar-nav">
-            {SECTIONS.map((section) => (
-              <button
-                key={section.id}
-                className={`guide-sidebar-link ${activeSection === section.id ? 'active' : ''}`}
-                onClick={() => goToSection(section.id)}
-              >
-                <i className={`fa-solid ${section.icon}`} />
-                {isKo ? section.ko : section.en}
-              </button>
-            ))}
-          </nav>
-        </aside>
-
-        {/* Main Content */}
-        <main className="guide-content">
-          <div className="guide-content-header">
-            <span className="guide-badge">
-              <i className="fa-solid fa-rocket" />
+        <div className="guide-layout">
+          {/* Sidebar */}
+          <aside className="guide-sidebar">
+            <div className="guide-sidebar-title">
               {isKo ? '고급 기능' : 'Advanced Features'}
-            </span>
-            <h1 className="guide-title">
-              {isKo ? 'ChatGPT 고급 기능 완전 가이드' : 'Complete Guide to ChatGPT Advanced Features'}
-            </h1>
-            <p className="guide-subtitle">
-              {isKo
-                ? 'DALL-E 이미지 생성, Code Interpreter, 웹 브라우징, Canvas, 음성 대화, Memory 등 ChatGPT의 강력한 고급 기능들을 마스터하세요.'
-                : 'Master powerful ChatGPT features including DALL-E image generation, Code Interpreter, web browsing, Canvas, voice chat, and Memory.'}
-            </p>
-          </div>
+            </div>
+            <ul className="guide-nav">
+              {SECTIONS.map((section) => (
+                <li key={section.id} className="guide-nav-item">
+                  <button
+                    className={`guide-nav-link ${activeSection === section.id ? 'active' : ''}`}
+                    onClick={() => goToSection(section.id)}
+                  >
+                    <span className="nav-icon"><i className={`fa-solid ${section.icon}`} /></span>
+                    {isKo ? section.ko : section.en}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </aside>
+
+          {/* Main Content */}
+          <div className="guide-content">
+            <div className="guide-content-header">
+              <h1>
+                {isKo ? 'ChatGPT 고급 기능 완전 가이드' : 'Complete Guide to ChatGPT Advanced Features'}
+              </h1>
+              <p>
+                {isKo
+                  ? 'DALL-E 이미지 생성, Code Interpreter, 웹 브라우징, Canvas, 음성 대화, Memory 등 ChatGPT의 강력한 고급 기능들을 마스터하세요.'
+                  : 'Master powerful ChatGPT features including DALL-E image generation, Code Interpreter, web browsing, Canvas, voice chat, and Memory.'}
+              </p>
+            </div>
 
           {/* DALL-E Section */}
           {activeSection === 'dalle' && (
             <section className="guide-section">
-              <h2 className="guide-section-title">
+              <h2>
                 <i className="fa-solid fa-image" />
                 {isKo ? 'DALL-E 3 - AI 이미지 생성' : 'DALL-E 3 - AI Image Generation'}
               </h2>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? 'DALL-E 3 소개' : 'Introduction to DALL-E 3'}</h3>
                 <p>
                   {isKo
@@ -108,7 +103,7 @@ export default function AdvancedFeatures() {
                 </p>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '이미지 생성 프롬프트 작성법' : 'Writing Image Generation Prompts'}</h3>
                 <p>
                   {isKo
@@ -170,7 +165,7 @@ purple and blue neon lighting."
                 />
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '스타일 지정과 이미지 편집' : 'Style Specification and Image Editing'}</h3>
                 <p>
                   {isKo
@@ -190,7 +185,7 @@ purple and blue neon lighting."
                 </TipBox>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '해상도, 비율 옵션 및 제한사항' : 'Resolution, Aspect Ratio Options & Limitations'}</h3>
                 <p>{isKo ? 'DALL-E 3에서 지원하는 이미지 크기:' : 'Image sizes supported by DALL-E 3:'}</p>
                 <ul>
@@ -215,12 +210,12 @@ purple and blue neon lighting."
           {/* Code Interpreter Section */}
           {activeSection === 'code' && (
             <section className="guide-section">
-              <h2 className="guide-section-title">
+              <h2>
                 <i className="fa-solid fa-terminal" />
                 {isKo ? 'Code Interpreter (코드 인터프리터)' : 'Code Interpreter'}
               </h2>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? 'Code Interpreter 소개' : 'Introduction to Code Interpreter'}</h3>
                 <p>
                   {isKo
@@ -234,7 +229,7 @@ purple and blue neon lighting."
                 </p>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '데이터 분석 활용' : 'Data Analysis Use Cases'}</h3>
                 <p>
                   {isKo
@@ -290,7 +285,7 @@ plt.show()`}
                 </TipBox>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '차트 생성 및 시각화' : 'Chart Generation & Visualization'}</h3>
                 <p>
                   {isKo
@@ -310,7 +305,7 @@ plt.show()`}
                 </p>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '파일 변환 및 기타 기능' : 'File Conversion & Other Features'}</h3>
                 <p>{isKo ? 'Code Interpreter로 할 수 있는 추가 작업들:' : 'Additional tasks possible with Code Interpreter:'}</p>
                 <ul>
@@ -337,12 +332,12 @@ plt.show()`}
           {/* Web Browsing Section */}
           {activeSection === 'browsing' && (
             <section className="guide-section">
-              <h2 className="guide-section-title">
+              <h2>
                 <i className="fa-solid fa-globe" />
                 {isKo ? '웹 브라우징 (Web Browsing)' : 'Web Browsing'}
               </h2>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '웹 검색 기능 소개' : 'Web Search Feature Introduction'}</h3>
                 <p>
                   {isKo
@@ -356,7 +351,7 @@ plt.show()`}
                 </p>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '실시간 정보 검색' : 'Real-time Information Search'}</h3>
                 <p>{isKo ? '다음과 같은 최신 정보를 검색할 수 있습니다:' : 'You can search for the latest information such as:'}</p>
                 <ul>
@@ -391,7 +386,7 @@ plt.show()`}
                 />
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '링크 분석 및 최신 뉴스 활용' : 'Link Analysis & News Utilization'}</h3>
                 <p>
                   {isKo
@@ -426,12 +421,12 @@ plt.show()`}
           {/* File Analysis Section */}
           {activeSection === 'files' && (
             <section className="guide-section">
-              <h2 className="guide-section-title">
+              <h2>
                 <i className="fa-solid fa-file-alt" />
                 {isKo ? '파일 분석 (File Analysis)' : 'File Analysis'}
               </h2>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '지원 파일 형식' : 'Supported File Formats'}</h3>
                 <p>
                   {isKo
@@ -448,7 +443,7 @@ plt.show()`}
                 </ul>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '문서 요약 및 분석' : 'Document Summarization & Analysis'}</h3>
                 <p>
                   {isKo
@@ -483,7 +478,7 @@ plt.show()`}
                 />
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '데이터 추출 및 파일 변환' : 'Data Extraction & File Conversion'}</h3>
                 <p>
                   {isKo
@@ -518,12 +513,12 @@ plt.show()`}
           {/* Canvas Section */}
           {activeSection === 'canvas' && (
             <section className="guide-section">
-              <h2 className="guide-section-title">
+              <h2>
                 <i className="fa-solid fa-pen-ruler" />
                 Canvas
               </h2>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? 'Canvas 소개' : 'Introduction to Canvas'}</h3>
                 <p>
                   {isKo
@@ -537,7 +532,7 @@ plt.show()`}
                 </p>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '글쓰기 모드' : 'Writing Mode'}</h3>
                 <p>{isKo ? 'Canvas 글쓰기 모드에서 활용할 수 있는 기능:' : 'Features available in Canvas writing mode:'}</p>
                 <ul>
@@ -564,7 +559,7 @@ plt.show()`}
                 </ul>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '코딩 모드' : 'Coding Mode'}</h3>
                 <p>{isKo ? 'Canvas 코딩 모드의 주요 기능:' : 'Key features of Canvas coding mode:'}</p>
                 <ul>
@@ -597,7 +592,7 @@ plt.show()`}
                 </TipBox>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '협업 편집 및 버전 관리' : 'Collaborative Editing & Version Control'}</h3>
                 <p>
                   {isKo
@@ -623,12 +618,12 @@ plt.show()`}
           {/* Voice Chat Section */}
           {activeSection === 'voice' && (
             <section className="guide-section">
-              <h2 className="guide-section-title">
+              <h2>
                 <i className="fa-solid fa-microphone" />
                 {isKo ? '음성 대화 (Voice Chat)' : 'Voice Chat'}
               </h2>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '음성 대화 모드 소개' : 'Voice Chat Mode Introduction'}</h3>
                 <p>
                   {isKo
@@ -642,7 +637,7 @@ plt.show()`}
                 </p>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? 'Advanced Voice Mode (고급 음성 모드)' : 'Advanced Voice Mode'}</h3>
                 <p>
                   {isKo
@@ -669,7 +664,7 @@ plt.show()`}
                 </ul>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '음성 설정 및 선택' : 'Voice Settings & Selection'}</h3>
                 <p>
                   {isKo
@@ -691,7 +686,7 @@ plt.show()`}
                 </TipBox>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '실시간 번역 및 활용 사례' : 'Real-time Translation & Use Cases'}</h3>
                 <p>{isKo ? '음성 대화의 다양한 활용 사례:' : 'Various voice chat use cases:'}</p>
                 <ul>
@@ -736,12 +731,12 @@ plt.show()`}
           {/* Memory Section */}
           {activeSection === 'memory' && (
             <section className="guide-section">
-              <h2 className="guide-section-title">
+              <h2>
                 <i className="fa-solid fa-brain" />
                 {isKo ? 'Memory 기능' : 'Memory Feature'}
               </h2>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? 'Memory 기능 소개' : 'Introduction to Memory Feature'}</h3>
                 <p>
                   {isKo
@@ -755,7 +750,7 @@ plt.show()`}
                 </p>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '기억 관리하기' : 'Managing Memories'}</h3>
                 <p>
                   {isKo
@@ -820,7 +815,7 @@ ChatGPT: "I've deleted that memory."`}
                 />
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '프라이버시 설정' : 'Privacy Settings'}</h3>
                 <p>
                   {isKo
@@ -849,7 +844,7 @@ ChatGPT: "I've deleted that memory."`}
                 </TipBox>
               </div>
 
-              <div className="guide-card">
+              <div>
                 <h3>{isKo ? '효과적인 Memory 활용법' : 'Effective Memory Usage'}</h3>
                 <p>
                   {isKo
@@ -885,40 +880,22 @@ ChatGPT: "I've deleted that memory."`}
           )}
 
           {/* Section Navigation */}
-          <div className="guide-nav-buttons">
+          <div className="guide-section-nav">
             <button
-              className="btn btn-secondary"
               onClick={goPrev}
               disabled={currentIndex === 0}
             >
-              <i className="fa-solid fa-arrow-left" />
-              {currentIndex > 0
-                ? isKo
-                  ? SECTIONS[currentIndex - 1].ko
-                  : SECTIONS[currentIndex - 1].en
-                : isKo
-                  ? '이전'
-                  : 'Previous'}
+              <i className="fa-solid fa-arrow-left" /> {isKo ? '이전' : 'Prev'}
             </button>
-            <span className="guide-nav-indicator">
-              {currentIndex + 1} / {SECTIONS.length}
-            </span>
             <button
-              className="btn btn-primary"
               onClick={goNext}
               disabled={currentIndex === SECTIONS.length - 1}
             >
-              {currentIndex < SECTIONS.length - 1
-                ? isKo
-                  ? SECTIONS[currentIndex + 1].ko
-                  : SECTIONS[currentIndex + 1].en
-                : isKo
-                  ? '다음'
-                  : 'Next'}
-              <i className="fa-solid fa-arrow-right" />
+              {isKo ? '다음' : 'Next'} <i className="fa-solid fa-arrow-right" />
             </button>
           </div>
-        </main>
+        </div>
+      </div>
       </div>
     </>
   );
