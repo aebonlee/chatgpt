@@ -1,9 +1,17 @@
 # ChatGPT Master - Supabase 설정 가이드
 
-## 1. 환경 변수 설정
+> 모든 테이블은 `chatgpt_` 접두어를 사용합니다 (다른 사이트와 Supabase를 공유하기 때문).
 
-프로젝트 루트에 `.env` 파일 생성:
+## 1. 환경 변수
 
+GitHub Secrets에 이미 설정되어 있으며, GitHub Actions 빌드 시 자동 주입됩니다.
+
+| Secret | 설명 |
+|--------|------|
+| `VITE_SUPABASE_URL` | Supabase 프로젝트 URL |
+| `VITE_SUPABASE_ANON_KEY` | Supabase Anonymous Key |
+
+로컬 개발 시 `.env` 파일 생성:
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
@@ -13,11 +21,10 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 
 Supabase Dashboard > SQL Editor에서 아래 스크립트를 순서대로 실행하세요.
 
-### 2-1. posts 테이블 생성
+### 2-1. chatgpt_posts 테이블
 
 ```sql
--- posts 테이블
-CREATE TABLE IF NOT EXISTS posts (
+CREATE TABLE IF NOT EXISTS chatgpt_posts (
   id BIGSERIAL PRIMARY KEY,
   author_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   author_name TEXT NOT NULL DEFAULT 'Anonymous',
@@ -29,38 +36,34 @@ CREATE TABLE IF NOT EXISTS posts (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- 인덱스
-CREATE INDEX IF NOT EXISTS idx_posts_category ON posts(category);
-CREATE INDEX IF NOT EXISTS idx_posts_created_at ON posts(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_posts_author_id ON posts(author_id);
+CREATE INDEX IF NOT EXISTS idx_chatgpt_posts_category ON chatgpt_posts(category);
+CREATE INDEX IF NOT EXISTS idx_chatgpt_posts_created_at ON chatgpt_posts(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_chatgpt_posts_author_id ON chatgpt_posts(author_id);
 ```
 
-### 2-2. comments 테이블 생성
+### 2-2. chatgpt_comments 테이블
 
 ```sql
--- comments 테이블
-CREATE TABLE IF NOT EXISTS comments (
+CREATE TABLE IF NOT EXISTS chatgpt_comments (
   id BIGSERIAL PRIMARY KEY,
-  post_id BIGINT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+  post_id BIGINT NOT NULL REFERENCES chatgpt_posts(id) ON DELETE CASCADE,
   author_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   author_name TEXT NOT NULL DEFAULT 'Anonymous',
   body TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- 인덱스
-CREATE INDEX IF NOT EXISTS idx_comments_post_id ON comments(post_id);
-CREATE INDEX IF NOT EXISTS idx_comments_author_id ON comments(author_id);
+CREATE INDEX IF NOT EXISTS idx_chatgpt_comments_post_id ON chatgpt_comments(post_id);
+CREATE INDEX IF NOT EXISTS idx_chatgpt_comments_author_id ON chatgpt_comments(author_id);
 ```
 
-### 2-3. 조회수 증가 함수 (RPC)
+### 2-3. 조회수 증가 RPC 함수
 
 ```sql
--- 조회수 증가 RPC 함수
-CREATE OR REPLACE FUNCTION increment_view_count(post_id BIGINT)
+CREATE OR REPLACE FUNCTION chatgpt_increment_view_count(post_id BIGINT)
 RETURNS VOID AS $$
 BEGIN
-  UPDATE posts SET view_count = view_count + 1 WHERE id = post_id;
+  UPDATE chatgpt_posts SET view_count = view_count + 1 WHERE id = post_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 ```
@@ -68,27 +71,25 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 ### 2-4. RLS (Row Level Security) 정책
 
 ```sql
--- RLS 활성화
-ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
-ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE chatgpt_posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE chatgpt_comments ENABLE ROW LEVEL SECURITY;
 
--- posts 정책
-CREATE POLICY "posts_select" ON posts FOR SELECT USING (true);
-CREATE POLICY "posts_insert" ON posts FOR INSERT WITH CHECK (auth.uid() = author_id);
-CREATE POLICY "posts_delete" ON posts FOR DELETE USING (auth.uid() = author_id);
-CREATE POLICY "posts_update" ON posts FOR UPDATE USING (auth.uid() = author_id);
+-- chatgpt_posts 정책
+CREATE POLICY "chatgpt_posts_select" ON chatgpt_posts FOR SELECT USING (true);
+CREATE POLICY "chatgpt_posts_insert" ON chatgpt_posts FOR INSERT WITH CHECK (auth.uid() = author_id);
+CREATE POLICY "chatgpt_posts_delete" ON chatgpt_posts FOR DELETE USING (auth.uid() = author_id);
+CREATE POLICY "chatgpt_posts_update" ON chatgpt_posts FOR UPDATE USING (auth.uid() = author_id);
 
--- comments 정책
-CREATE POLICY "comments_select" ON comments FOR SELECT USING (true);
-CREATE POLICY "comments_insert" ON comments FOR INSERT WITH CHECK (auth.uid() = author_id);
-CREATE POLICY "comments_delete" ON comments FOR DELETE USING (auth.uid() = author_id);
+-- chatgpt_comments 정책
+CREATE POLICY "chatgpt_comments_select" ON chatgpt_comments FOR SELECT USING (true);
+CREATE POLICY "chatgpt_comments_insert" ON chatgpt_comments FOR INSERT WITH CHECK (auth.uid() = author_id);
+CREATE POLICY "chatgpt_comments_delete" ON chatgpt_comments FOR DELETE USING (auth.uid() = author_id);
 ```
 
 ### 2-5. updated_at 자동 갱신 트리거
 
 ```sql
--- updated_at 자동 갱신
-CREATE OR REPLACE FUNCTION update_updated_at()
+CREATE OR REPLACE FUNCTION chatgpt_update_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
   NEW.updated_at = now();
@@ -96,43 +97,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER posts_updated_at
-  BEFORE UPDATE ON posts
-  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+CREATE TRIGGER chatgpt_posts_updated_at
+  BEFORE UPDATE ON chatgpt_posts
+  FOR EACH ROW EXECUTE FUNCTION chatgpt_update_updated_at();
 ```
 
-## 3. Supabase Authentication 설정
+## 3. 테이블 구조 요약
 
-### Supabase Dashboard > Authentication > Providers
-
-1. **Email** — 기본 활성화 (이메일/비밀번호 로그인)
-2. **Google** — OAuth 설정
-   - Google Cloud Console에서 OAuth 2.0 클라이언트 ID 생성
-   - Redirect URL: `https://your-project.supabase.co/auth/v1/callback`
-3. **Kakao** — OAuth 설정
-   - Kakao Developers에서 앱 생성
-   - Redirect URL: `https://your-project.supabase.co/auth/v1/callback`
-
-### Supabase Dashboard > Authentication > URL Configuration
-
-- **Site URL**: `https://chatgpt.dreamitbiz.com`
-- **Redirect URLs**: `https://chatgpt.dreamitbiz.com/`, `http://localhost:5177/`
-
-## 4. 관리자 설정
-
-`src/config/admin.js`에서 관리자 이메일을 설정합니다:
-
-```javascript
-export const ADMIN_EMAILS = [
-  'aebonlee@gmail.com',
-  'aebon@kakao.com',
-  'admin@dreamitbiz.com',
-];
-```
-
-## 5. 테이블 구조 요약
-
-### posts
+### chatgpt_posts
 | 컬럼 | 타입 | 설명 |
 |------|------|------|
 | id | BIGSERIAL | PK |
@@ -145,12 +117,20 @@ export const ADMIN_EMAILS = [
 | created_at | TIMESTAMPTZ | 생성일시 |
 | updated_at | TIMESTAMPTZ | 수정일시 |
 
-### comments
+### chatgpt_comments
 | 컬럼 | 타입 | 설명 |
 |------|------|------|
 | id | BIGSERIAL | PK |
-| post_id | BIGINT | 게시글 FK (CASCADE 삭제) |
+| post_id | BIGINT | chatgpt_posts FK (CASCADE 삭제) |
 | author_id | UUID | 작성자 (auth.users FK) |
 | author_name | TEXT | 작성자 표시 이름 |
 | body | TEXT | 댓글 내용 |
 | created_at | TIMESTAMPTZ | 생성일시 |
+
+## 4. 코드 매핑
+
+| 코드 (posts.js) | Supabase 테이블 |
+|-----------------|----------------|
+| `.from('chatgpt_posts')` | chatgpt_posts |
+| `.from('chatgpt_comments')` | chatgpt_comments |
+| `.rpc('chatgpt_increment_view_count')` | chatgpt_increment_view_count() |

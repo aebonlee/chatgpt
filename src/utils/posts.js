@@ -2,8 +2,8 @@ import { supabase } from './supabase';
 
 export async function getPosts({ category, search, limit } = {}) {
   let query = supabase
-    .from('posts')
-    .select('*, comment_count:comments(count)')
+    .from('chatgpt_posts')
+    .select('*, comment_count:chatgpt_comments(count)')
     .order('created_at', { ascending: false });
 
   if (category && category !== 'all') {
@@ -29,10 +29,10 @@ export async function getPosts({ category, search, limit } = {}) {
 }
 
 export async function getPostById(id) {
-  await supabase.rpc('increment_view_count', { post_id: Number(id) }).catch(() => {});
+  await supabase.rpc('chatgpt_increment_view_count', { post_id: Number(id) }).catch(() => {});
 
   const { data: post, error } = await supabase
-    .from('posts')
+    .from('chatgpt_posts')
     .select('*')
     .eq('id', id)
     .single();
@@ -40,7 +40,7 @@ export async function getPostById(id) {
   if (error) throw error;
 
   const { data: comments } = await supabase
-    .from('comments')
+    .from('chatgpt_comments')
     .select('*')
     .eq('post_id', id)
     .order('created_at', { ascending: true });
@@ -50,7 +50,7 @@ export async function getPostById(id) {
 
 export async function createPost({ category, title, content, authorId, authorName }) {
   const { data, error } = await supabase
-    .from('posts')
+    .from('chatgpt_posts')
     .insert({
       author_id: authorId,
       author_name: authorName,
@@ -66,13 +66,13 @@ export async function createPost({ category, title, content, authorId, authorNam
 }
 
 export async function deletePost(id) {
-  const { error } = await supabase.from('posts').delete().eq('id', id);
+  const { error } = await supabase.from('chatgpt_posts').delete().eq('id', id);
   if (error) throw error;
 }
 
 export async function createComment({ postId, body, authorId, authorName }) {
   const { data, error } = await supabase
-    .from('comments')
+    .from('chatgpt_comments')
     .insert({
       post_id: postId,
       author_id: authorId,
@@ -87,6 +87,6 @@ export async function createComment({ postId, body, authorId, authorName }) {
 }
 
 export async function deleteComment(id) {
-  const { error } = await supabase.from('comments').delete().eq('id', id);
+  const { error } = await supabase.from('chatgpt_comments').delete().eq('id', id);
   if (error) throw error;
 }
