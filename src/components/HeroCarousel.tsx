@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function HeroCarousel({ slides }) {
+export default function HeroCarousel({ slides }: any) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {

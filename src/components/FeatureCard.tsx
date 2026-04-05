@@ -1,4 +1,4 @@
-export default function FeatureCard({ icon, title, description }) {
+export default function FeatureCard({ icon, title, description }: any) {
   return (
     <div className="feature-card">
       <div className="feature-icon">

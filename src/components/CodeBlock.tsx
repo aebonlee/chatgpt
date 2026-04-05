@@ -99,7 +99,7 @@ function highlightCode(code, language) {
   }).join('\n');
 }
 
-export default function CodeBlock({ code, language = '' }) {
+export default function CodeBlock({ code, language = '' }: any) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {

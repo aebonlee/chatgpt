@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
 import { isAdmin as isAdminEmail } from '../config/admin';
 
-const AuthContext = createContext();
+const AuthContext = createContext<any>(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);

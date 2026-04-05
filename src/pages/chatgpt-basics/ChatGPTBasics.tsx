@@ -116,7 +116,7 @@ export default function ChatGPTBasics() {
 /* ===============================================
    Section: Introduction
    =============================================== */
-function IntroSection({ isKo }) {
+function IntroSection({ isKo }: any) {
   return (
     <div className="guide-section">
       <h2>{isKo ? 'ChatGPT 소개' : 'Introduction to ChatGPT'}</h2>
@@ -258,7 +258,7 @@ function IntroSection({ isKo }) {
 /* ===============================================
    Section: Account & Plans
    =============================================== */
-function AccountSection({ isKo }) {
+function AccountSection({ isKo }: any) {
   return (
     <div className="guide-section">
       <h2>{isKo ? '계정 생성 & 요금제' : 'Account & Plans'}</h2>
@@ -385,7 +385,7 @@ function AccountSection({ isKo }) {
 /* ===============================================
    Section: Interface Guide
    =============================================== */
-function InterfaceSection({ isKo }) {
+function InterfaceSection({ isKo }: any) {
   return (
     <div className="guide-section">
       <h2>{isKo ? '인터페이스 이해' : 'Interface Guide'}</h2>
@@ -563,7 +563,7 @@ function InterfaceSection({ isKo }) {
 /* ===============================================
    Section: Effective Conversations
    =============================================== */
-function ConversationSection({ isKo }) {
+function ConversationSection({ isKo }: any) {
   return (
     <div className="guide-section">
       <h2>{isKo ? '효과적인 대화법' : 'Effective Conversations'}</h2>
@@ -731,7 +731,7 @@ Requirements:
 /* ===============================================
    Section: Settings & Custom
    =============================================== */
-function SettingsSection({ isKo }) {
+function SettingsSection({ isKo }: any) {
   return (
     <div className="guide-section">
       <h2>{isKo ? '설정 & 커스텀' : 'Settings & Custom'}</h2>
@@ -907,7 +907,7 @@ Response preferences:
 /* ===============================================
    Section: Tips & Shortcuts
    =============================================== */
-function TipsSection({ isKo }) {
+function TipsSection({ isKo }: any) {
   return (
     <div className="guide-section">
       <h2>{isKo ? '팁 & 단축키' : 'Tips & Shortcuts'}</h2>
@@ -1033,7 +1033,7 @@ function TipsSection({ isKo }) {
 /* ===============================================
    Section: Use Cases
    =============================================== */
-function UseCasesSection({ isKo }) {
+function UseCasesSection({ isKo }: any) {
   return (
     <div className="guide-section">
       <h2>{isKo ? '활용 사례' : 'Use Cases'}</h2>
