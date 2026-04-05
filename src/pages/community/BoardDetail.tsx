@@ -26,7 +26,7 @@ export default function BoardDetail() {
       try {
         const data = await getPostById(id);
         setPost(data);
-      } catch (err) {
+      } catch (err: any) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -45,7 +45,7 @@ export default function BoardDetail() {
       setPost(prev => ({ ...prev, comments: [...(prev.comments || []), newComment] }));
       setCommentText('');
       toast.success(isKo ? '댓글이 등록되었습니다.' : 'Comment posted.');
-    } catch (err) {
+    } catch (err: any) {
       toast.error(err.message);
     } finally {
       setSubmitting(false);
@@ -58,7 +58,7 @@ export default function BoardDetail() {
       await deleteComment(commentId);
       setPost(prev => ({ ...prev, comments: prev.comments.filter(c => c.id !== commentId) }));
       toast.success(isKo ? '댓글이 삭제되었습니다.' : 'Comment deleted.');
-    } catch (err) {
+    } catch (err: any) {
       toast.error(err.message);
     }
   };
@@ -69,7 +69,7 @@ export default function BoardDetail() {
       await deletePost(Number(id));
       toast.success(isKo ? '게시글이 삭제되었습니다.' : 'Post deleted.');
       navigate('/community/board');
-    } catch (err) {
+    } catch (err: any) {
       toast.error(err.message);
     }
   };

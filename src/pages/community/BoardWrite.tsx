@@ -32,7 +32,7 @@ export default function BoardWrite() {
       await createPost({ category, title: title.trim(), content: content.trim(), authorId: user.id, authorName });
       toast.success(isKo ? '게시글이 등록되었습니다.' : 'Post has been created.');
       navigate('/community/board');
-    } catch (err) {
+    } catch (err: any) {
       toast.error(err.message);
     } finally {
       setLoading(false);
