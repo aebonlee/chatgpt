@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '../utils/supabase';
+import { supabase, setSharedSession, getSharedSession, clearSharedSession } from '../utils/supabase';
 import { isAdmin as isAdminEmail } from '../config/admin';
 
 const AuthContext = createContext<any>(null);
@@ -38,11 +38,20 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       const currentUser = session?.user ?? null;
       setUser(currentUser);
       checkAdmin(currentUser);
       if (currentUser) trackDomain(currentUser);
+      if (!currentUser) {
+        const rt = getSharedSession();
+        if (rt) {
+          try {
+            const { data } = await supabase.auth.refreshSession({ refresh_token: rt });
+            if (!data.session) clearSharedSession();
+          } catch { clearSharedSession(); }
+        }
+      }
       setLoading(false);
     });
 
@@ -50,6 +59,8 @@ export function AuthProvider({ children }) {
       const currentUser = session?.user ?? null;
       setUser(currentUser);
       checkAdmin(currentUser);
+      if (session?.refresh_token) setSharedSession(session.refresh_token);
+      if (event === 'SIGNED_OUT') clearSharedSession();
       if (currentUser && event === 'SIGNED_IN') trackDomain(currentUser);
     });
 
