@@ -139,6 +139,17 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+        <div className="mobile-menu-actions">
+          {isAuthenticated ? (
+            <button className="nav-auth-btn" onClick={handleSignOut}>
+              {isKo ? '로그아웃' : 'Sign Out'}
+            </button>
+          ) : (
+            <Link to="/login" className="nav-auth-btn">
+              {isKo ? '로그인' : 'Login'}
+            </Link>
+          )}
+        </div>
       </div>
     </>
   );
