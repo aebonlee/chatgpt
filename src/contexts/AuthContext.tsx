@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase, setSharedSession, getSharedSession, clearSharedSession } from '../utils/supabase';
-import { isAdmin as isAdminEmail } from '../config/admin';
+import { ADMIN_EMAILS } from '../config/admin';
 
 const AuthContext = createContext<any>(null);
 
@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
       setAdminFlag(false);
       return;
     }
-    setAdminFlag(isAdminEmail(currentUser.email));
+    setAdminFlag(ADMIN_EMAILS.includes(currentUser.email?.toLowerCase()));
   };
 
   const trackDomain = async (authUser: any) => {
