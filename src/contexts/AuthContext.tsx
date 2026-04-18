@@ -65,17 +65,17 @@ export function AuthProvider({ children }) {
       if (currentUser && event === 'SIGNED_IN') trackDomain(currentUser);
     });
 
+    return () => subscription.unsubscribe();
+  }, []);
+
 
   // 10분 무동작 세션 타임아웃
   useIdleTimeout({
-    enabled: !!user,
-    onTimeout: () => {
-      clearSharedSession();
-    },
+  enabled: !!user,
+  onTimeout: () => {
+  clearSharedSession();
+  },
   });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   return (
     <AuthContext.Provider value={{ user, loading, isAuthenticated: !!user, isAdmin: adminFlag }}>
