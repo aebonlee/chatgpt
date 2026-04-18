@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase, setSharedSession, getSharedSession, clearSharedSession } from '../utils/supabase';
 import { ADMIN_EMAILS } from '../config/admin';
+import { useIdleTimeout } from '../hooks/useIdleTimeout';
 
 const AuthContext = createContext<any>(null);
 
@@ -63,6 +64,15 @@ export function AuthProvider({ children }) {
       if (event === 'SIGNED_OUT') clearSharedSession();
       if (currentUser && event === 'SIGNED_IN') trackDomain(currentUser);
     });
+
+
+  // 10분 무동작 세션 타임아웃
+  useIdleTimeout({
+    enabled: !!user,
+    onTimeout: () => {
+      clearSharedSession();
+    },
+  });
 
     return () => subscription.unsubscribe();
   }, []);
