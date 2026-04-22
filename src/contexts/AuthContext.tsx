@@ -4,6 +4,7 @@ import { ADMIN_EMAILS } from '../config/admin';
 import { useIdleTimeout } from '../hooks/useIdleTimeout';
 import ProfileCompleteModal from '../components/ProfileCompleteModal';
 
+import PaymentNudgePopup from '../components/PaymentNudgePopup';
 const AuthContext = createContext<any>(null);
 
 export function AuthProvider({ children }) {
@@ -97,6 +98,9 @@ export function AuthProvider({ children }) {
       {needsProfileCompletion && user && (
         <ProfileCompleteModal user={user} onComplete={refreshProfile} />
       )}
+    {isLoggedIn && user && !needsProfileCompletion && (
+      <PaymentNudgePopup user={user} siteSlug="chatgpt" />
+    )}
     </AuthContext.Provider>
   );
 }
